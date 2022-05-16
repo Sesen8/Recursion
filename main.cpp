@@ -11,8 +11,8 @@ using std::ostream;
 unsigned long long int Fibonacci(unsigned int n);
 void PrintReverseString(const string& str, ostream& output = cout);
 // You may change the parameters of these functions
-size_t MinimumPosition(const int array[], size_t size);
-void SelectionSort(int array[], size_t size);
+size_t MinimumPosition(const int array[], size_t size, size_t index=0, size_t min=0);
+void SelectionSort(int array[], size_t size, size_t index=0);
 
 
 int main() {
@@ -85,14 +85,58 @@ int main() {
 }
 
 unsigned long long int Fibonacci(unsigned int n){
-	return 0;
+    if(n==0 || n==1){
+        return n;
+    }
+    else{
+        //calling on itself
+        return Fibonacci(n-1) + Fibonacci(n-2);
+    }
+
 }
 void PrintReverseString(const string& str, ostream& output){
+    if(str.empty()){
+        output << "";
+    }
+    else if(str.length()==1){
+        output << str;
+    }
+    else{
+        // calling on itself
+        string newstr = str.substr(1,(str.length()-1));
+        PrintReverseString(newstr,output);
+        output << str.at(0);
+    }
 }
 // You may change the parameters of these functions
-size_t MinimumPosition(const int array[], size_t size){
-	return 0;
+//need to add index and minimum position
+//initialize index and minimum position to 0 in definition
+size_t MinimumPosition(const int array[], size_t size, size_t index, size_t min){
+	if(index >= size){
+        return min;
+    }
+    if(array[index] < array[min]){
+        return MinimumPosition(array,size,index+1,index);
+    }
+    else{
+        //calling on itself
+        return MinimumPosition(array,size,index+1,min);
+    }
 }
-void SelectionSort(int array[], size_t size){
+
+//need to add index
+//initialize index to 0 in definition
+void SelectionSort(int array[], size_t size, size_t index){
+    if(index >= size){
+        return;
+    }
+    size_t min = MinimumPosition(array,size,index,index);
+    if(index!=min){
+        int tmpPos = array[index];
+        array[index]=array[min];
+        array[min]=tmpPos;
+    }
+    //calling on itself
+    SelectionSort(array,size,index+1);
 
 }
